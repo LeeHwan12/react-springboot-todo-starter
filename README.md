@@ -1,70 +1,43 @@
-# Getting Started with Create React App
+react-springboot-todo-starter
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+React(프론트) + Spring Boot(백엔드)로 간단한 Todo REST 앱을 만드는 실습 저장소입니다.
+개발 중에는 CRA 프록시로 CORS 없이 빠르게 연동하고, 백엔드는 MySQL 8를 사용합니다.
 
-## Available Scripts
+✅ 기능
 
-In the project directory, you can run:
+GET /api/hello – 서버 헬스 체크(문자/JSON)
 
-### `npm start`
+Todo CRUD
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+GET /api/todos – 목록
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+POST /api/todos – 생성
 
-### `npm test`
+PATCH /api/todos/{id}/toggle – 완료/미완료 토글
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+DELETE /api/todos/{id} – 삭제
 
-### `npm run build`
+🧰 기술 스택
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Frontend: React 19 + react-scripts 5
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Backend: Spring Boot 3.5.x, Gradle 8, Java 17+ (로컬은 23도 OK)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+DB: MySQL 8.x, Spring Data JPA, HikariCP
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+트러블슈팅(이번 실습에서 실제로 만났던 이슈)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Failed to fetch: 백엔드 미기동/URL 오타/CORS → 프록시 설정 후 상대경로 사용
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+HTML(index.html) 응답: /api를 프론트(3002)로 직접 호출 → 프록시 설정 누락
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Ambiguous mapping: 같은 경로/HTTP 메서드로 매핑 중복 → 경로 정리
 
-## Learn More
+Failed to configure a DataSource: JPA 켰는데 DB 설정 없음 → 드라이버/URL/계정 설정 or JPA 제외
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Access denied for user '"root"': username에 따옴표 포함 → 따옴표 제거
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+open-in-view 파싱 오류: properties 인라인 주석 사용 → 주석은 다음 줄에
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+not-null property ... Todo.completed: completed가 null → 원시형 boolean + 기본값 or @PrePersist/@Builder.Default
